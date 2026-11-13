@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Bet.Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:64778;http://localhost:64779"
+    }
+  }
+}

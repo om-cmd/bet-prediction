@@ -1,0 +1,17 @@
+**/bin/
+**/obj/
+**/__pycache__/
+.idea/
+.vs/
+.vscode/
+.venv/
+.env
+.env.*
+*.user
+*.suo
+appsettings.Development.json
+appsettings.Local.json
+*.pfx
+*.pem
+*.key
+src/Bet.Web/Data/*.json

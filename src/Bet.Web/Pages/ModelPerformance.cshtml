@@ -1,0 +1,55 @@
+@page "/ModelPerformance"
+@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111814">
+    <title>Model performance · Touchline</title>
+    <link rel="stylesheet" href="/app.css">
+    <script src="/model-performance.js" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to model performance</a>
+    <header class="topbar">
+        <a class="brand" id="performance-home" href="/">
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none"><path d="M8 10h16M16 10v13M11 23h10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="23" cy="17" r="2" fill="currentColor"/></svg>
+            </span>
+            <span>Touchline<span class="brand-dot">.</span></span>
+        </a>
+        <div class="topbar-actions">
+            <a id="performance-back" class="performance-back" href="/">Back to fixtures</a>
+        </div>
+    </header>
+    <main id="main" class="performance-page">
+        <section class="hero" aria-labelledby="performance-title">
+            <div class="hero-copy">
+                <p class="eyebrow hero-label"><span class="status-dot"></span> Forecast validation</p>
+                <h1 id="performance-title">Model performance</h1>
+                <p class="hero-description">Review the model's tuning and accuracy on historical matches.</p>
+            </div>
+            <div class="performance-tools">
+                <label class="market-picker">
+                    <span class="sr-only">Competition</span>
+                    <select id="performance-competition" disabled></select>
+                </label>
+                <span class="hero-meta" id="performance-freshness">Loading results history…</span>
+            </div>
+        </section>
+        <div id="performance-notices" class="notices" aria-live="polite"></div>
+        <section class="performance-card" aria-labelledby="performance-diagnostics">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow section-kicker">Diagnostics</p>
+                    <h2 id="performance-diagnostics">Forecast validation</h2>
+                </div>
+            </div>
+            <div id="model-details" class="model-details" aria-live="polite" aria-busy="true">Loading diagnostics…</div>
+        </section>
+    </main>
+</body>
+</html>

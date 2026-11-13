@@ -1,0 +1,144 @@
+@page
+@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111814">
+    <meta name="description" content="Football fixtures, scores and model probabilities in one dashboard.">
+    <title>Touchline · Football forecasts</title>
+    <link rel="stylesheet" href="/app.css">
+    <script src="/app.js" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to fixtures</a>
+    <header class="topbar">
+        <a class="brand" href="/">
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none"><path d="M8 10h16M16 10v13M11 23h10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="23" cy="17" r="2" fill="currentColor"/></svg>
+            </span>
+            <span>Touchline<span class="brand-dot">.</span></span>
+        </a>
+        <div class="topbar-divider" aria-hidden="true"></div>
+        <span class="topbar-label">Football analytics</span>
+        <div class="topbar-actions">
+            <span id="data-mode" class="data-mode"><span class="status-dot"></span><span>Connecting</span></span>
+            <a class="slip-jump" href="#slip-title">Slip <span id="slip-jump-count">0</span></a>
+            <button type="button" class="refresh-button" id="refresh">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 5v5h-5M4 19v-5h5M19.5 10a8 8 0 0 0-13.4-4L4 8m16 8-2.1 2A8 8 0 0 1 4.5 14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Refresh</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="workspace">
+        <aside class="rail" aria-label="Competitions">
+            <div class="rail-header">
+                <span class="eyebrow">Football</span>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.5"/><path d="m12 8 3.8 2.8-1.5 4.5H9.7l-1.5-4.5L12 8Zm0 0V3.5m3.8 7.3 4.4-1.4m-5.9 5.9 2.7 3.7m-7.3-3.7L7 19m1.2-8.2L3.8 9.4" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            </div>
+            <h2 class="rail-title">Competitions</h2>
+            <label class="competition-search">
+                <span class="sr-only">Search competitions</span>
+                <input id="competition-search" type="search" placeholder="Find a league or cup" autocomplete="off" disabled>
+            </label>
+            <p class="sr-only" id="competition-results" role="status"></p>
+            <nav id="competition-nav" class="competition-nav" aria-label="Choose a competition">
+                <button class="competition-button active" type="button" aria-current="true" disabled>
+                    <span class="competition-icon" aria-hidden="true">✦</span><span>Champions League</span>
+                </button>
+            </nav>
+            <div class="rail-note">
+                <span class="rail-note-label"><span class="status-dot"></span> Market coverage</span>
+                <p>Available fixtures and markets vary by competition.</p>
+            </div>
+        </aside>
+
+        <main id="main" class="main-column">
+            <section class="hero" aria-labelledby="competition-title">
+                <svg class="pitch" viewBox="0 0 420 260" fill="none" aria-hidden="true">
+                    <g stroke="currentColor" stroke-width="1.4">
+                        <rect x="32" y="21" width="355" height="218" rx="2"/>
+                        <path d="M209.5 21v218M32 74h58v112H32m355-112h-58v112h58M32 106h24v48H32m355-48h-24v48h24"/>
+                        <circle cx="209.5" cy="130" r="39"/>
+                        <path d="M90 101a39 39 0 0 1 0 58m239-58a39 39 0 0 0 0 58"/>
+                        <circle cx="209.5" cy="130" r="3" fill="currentColor"/>
+                    </g>
+                </svg>
+                <div class="hero-copy">
+                    <p class="eyebrow hero-label"><span class="status-dot"></span> Football forecast desk <span id="competition-region" hidden></span></p>
+                    <h1 id="competition-title">UEFA Champions League</h1>
+                    <p class="hero-description">Follow scores, explore match probabilities, and build a multi within one match or across fixtures.</p>
+                </div>
+                <div class="hero-meta">
+                    <span id="fixtures-meta">Loading fixtures</span>
+                    <span id="forecast-meta" hidden></span>
+                    <span id="result-meta" hidden></span>
+                    <span id="storage-meta" class="storage-meta" hidden></span>
+                    <a href="/ModelPerformance" id="model-jump">Model performance</a>
+                </div>
+            </section>
+
+            <div id="notices" class="notices" aria-live="polite"></div>
+
+            <section class="match-section" aria-labelledby="matches-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow section-kicker">Match centre</p>
+                        <h2 id="matches-title">Fixtures &amp; results</h2>
+                    </div>
+                    <span id="timezone" class="timezone"></span>
+                </div>
+                <div class="fixture-tools">
+                    <div class="view-options" aria-label="Fixture view">
+                        <button type="button" class="view-button active" data-view="upcoming" aria-pressed="true">Upcoming</button>
+                        <button type="button" class="view-button" data-view="finished" aria-pressed="false">Results</button>
+                        <button type="button" class="view-button" data-view="all" aria-pressed="false">All fixtures</button>
+                    </div>
+                    <label class="market-picker">
+                        <span class="sr-only">Betting market</span>
+                        <select id="market-select">
+                            <option value="h2h">Match result · 1X2</option>
+                            <option value="totals25">Total goals · 2.5</option>
+                            <option value="btts">Both teams to score</option>
+                        </select>
+                    </label>
+                </div>
+                <div id="fixtures" class="fixtures" aria-busy="true" aria-label="Matches">
+                    <div class="loading-state" role="status">Loading matches and forecasts…</div>
+                </div>
+            </section>
+
+        </main>
+
+        <aside class="slip-column" aria-labelledby="slip-title">
+            <section class="slip">
+                <div class="slip-heading">
+                    <span class="slip-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v5a3 3 0 0 0 0 6v5H5v-5a3 3 0 0 0 0-6V4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 7v2m0 2v2m0 2v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </span>
+                    <div><p class="eyebrow slip-kicker">Scenario builder</p><h2 id="slip-title">Multi slip</h2></div>
+                    <span class="slip-count" id="slip-count" aria-label="0 selections">0</span>
+                </div>
+                <div class="slip-modes" role="group" aria-label="Multi slip type">
+                    <button type="button" class="view-button active" data-slip-mode="across" aria-pressed="true">Across matches</button>
+                    <button type="button" class="view-button" data-slip-mode="same" aria-pressed="false">Same Game Multi</button>
+                </div>
+                <div id="slip-content"></div>
+                <p class="sr-only" role="status" id="slip-status"></p>
+            </section>
+            <section id="multi-suggestions" class="slip suggestions" aria-labelledby="suggestions-title" hidden>
+                <div class="suggestions-heading">
+                    <p class="eyebrow slip-kicker">Across matches</p>
+                    <h2 id="suggestions-title">Suggested multis</h2>
+                </div>
+                <div id="suggestions-content"></div>
+            </section>
+            <p class="side-disclaimer">Forecasts are estimates.</p>
+        </aside>
+    </div>
+</body>
+</html>
