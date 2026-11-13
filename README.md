@@ -54,6 +54,8 @@ A replay of the first 72 Champions League league-phase matches of 2026/27 gave 4
 
 Forecast inputs are fixture details and confirmed 90-minute results. Accounting for injuries, suspensions, or starting lineups requires timestamped player data and historical coverage to validate how those signals change the estimates.
 
+The [22-competition benchmark](BENCHMARK.md) shows where the revised model improved and where it struggled.
+
 The across-match slip uses one outcome per fixture. It multiplies individual probabilities under an independence assumption. Use **Build Same Game Multi** to combine outcomes from different markets within a match. For supported result and goal markets, the app adds the probabilities of scorelines where every leg wins. For example, Arsenal to win and over 2.5 goals only includes winning Arsenal scorelines with at least three goals. Corners, cards and player props require a separate statistics feed and joint model. Optional individual sportsbook quotes do not supply a combined same-game price.
 
 ## Contribute
